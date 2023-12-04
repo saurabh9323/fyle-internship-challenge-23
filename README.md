@@ -35,7 +35,7 @@ You will hear back within 48 hours from us via email.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to http://localhost:4200/ or [visit live](https://fyle-internship-challenge-23-two.vercel.app). The app will automatically reload if you change any of the source files.
 
 ## Further help
 
