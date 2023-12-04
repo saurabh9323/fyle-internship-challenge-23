@@ -1,0 +1,124 @@
+<div class="flex flex-col m-4 p-8 w-full">
+  <div class="flex flex-row items-center container m-auto">
+    <div>
+      <div
+        class="m-5 rounded-full flex justify-center items-center h-32 w-32 bg-slate-200"
+        *ngIf="showRepositories"
+      >
+        <!-- Show if showRepositories is true -->
+        <img
+          class="h-full w-full rounded-full"
+          *ngIf="userAvatar"
+          [src]="userAvatar"
+          alt="User Avatar"
+        />
+      </div>
+    </div>
+    <div class="m-5 flex justify-center">
+      <div class="input-container" *ngIf="!showRepositories">
+        <!-- Show only if showRepositories is false -->
+        <input
+          class="mr-5"
+          type="text"
+          [(ngModel)]="githubUsername"
+          placeholder="Enter GitHub username"
+          class="py-2 px-4 border rounded mr-2"
+        />
+        <button
+          (click)="getUserData()"
+          class="py-2 px-4 bg-blue-500 text-white rounded"
+        >
+          Fetch Repositories
+        </button>
+      </div>
+
+      <div *ngIf="showRepositories">
+        <p class="text-2xl font-bold" *ngIf="userName">{{ userName }}</p>
+        <p *ngIf="userBio">{{ userBio }}</p>
+        <p *ngIf="userLocation">
+          <i class="fas fa-map-marker mr-3"></i>{{ userLocation }}
+        </p>
+        <p *ngIf="twitterUsername">
+          Twitter: https://twitter.com/<a
+            href="https://twitter.com/{{ twitterUsername }}"
+            target="_blank"
+            >{{ twitterUsername }}</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container m-auto mb-5 p-5">
+    <div *ngIf="showRepositories">
+      <p *ngIf="userHtmlUrl">
+        <i class="fas fa-link mr-3"></i>GitHub:
+        <a [href]="userHtmlUrl" target="_blank">{{ userHtmlUrl }}</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="w-full">
+    <div class="container m-auto">
+      <ul class="w-full flex flex-col md:flex-row flex-wrap">
+        <li
+          class="w-full md:w-1/2 p-4"
+          *ngFor="let repo of paginatedRepositories"
+        >
+          <div class="border-2 p-2 border-black">
+            <p class="text-2xl text-blue-400">
+              {{ repo.name }}
+            </p>
+            <p class="my-2 mx-1 border-zinc-950">
+              {{ repo.description }}
+            </p>
+            <div class="border-zinc-950 flex flex-col md:flex-row">
+              <p
+                class="rounded-lg my-4 mx-1 bg-blue-400 text-white py-1 px-2"
+                *ngFor="let lang of repoLanguages[repo.name] | keyvalue"
+              >
+                {{ lang.key }}
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <div class="flex flex-col justify-center items-center">
+      <div class="py-3">
+        <span *ngFor="let page of pageNumbers">
+          <button
+            (click)="currentPage = page"
+            [disabled]="currentPage === page"
+            [ngClass]="{ active: currentPage === page }"
+          >
+            <span
+              class="text-blue-400 border px-4 py-2 border-black"
+              [ngClass]="{ 'active-page': currentPage === page }"
+              >{{ page }}</span
+            >
+          </button>
+        </span>
+      </div>
+      <div *ngIf="showRepositories" class="mt-5">
+        <button
+          class="px-4 rounded-3xl border text-blue-400 border-black mr-5"
+          (click)="prevPage()"
+          [disabled]="currentPage === 1"
+        >
+          Previous
+        </button>
+        <button
+          class="px-4 rounded-3xl border text-blue-400 border-black"
+          (click)="nextPage()"
+          [disabled]="currentPage * itemsPerPage >= repositories.length"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
